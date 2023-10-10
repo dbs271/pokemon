@@ -15,6 +15,7 @@ const config = {
   docs: {
     autodocs: "tag",
   },
+  staticDirs: ["../public"],
   webpackFinal: async (config) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "../src/");
     config.resolve.alias["next/image"] = require.resolve("./NextImage.js");
