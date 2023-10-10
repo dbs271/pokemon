@@ -1,4 +1,4 @@
-export const BackgroundColor = {
+const BackgroundColors = {
   normal: "#949495",
   fighting: "#e09c41",
   flying: "#a3c3e7",
@@ -18,3 +18,5 @@ export const BackgroundColor = {
   dark: "#4b4948",
   fairy: "#dab4d4",
 };
+
+export default BackgroundColors;

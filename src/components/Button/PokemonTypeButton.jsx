@@ -1,19 +1,17 @@
+import Image from "next/image";
 import React from "react";
-import styled from "styled-components";
 
-const PokemonTypeButton = () => {
-  const BackgroundColor = {
-    'normal': '#949495',
-    'fighting': '#e09c41',
-    'flying': '#a3c3e7',
-    ''
-  }
-  return <div>index</div>;
+const PokemonTypeButton = ({ label, backgroundColor, type, width, height }) => {
+  const style = {
+    backgroundColor,
+  };
+  const imageSrc = `/images/pokemon-types/${type}.svg`;
+  return (
+    <button style={style}>
+      {label}
+      <Image src={imageSrc} alt={label} width={width} height={height} />
+    </button>
+  );
 };
 
 export default PokemonTypeButton;
-
-export const S = {}
-
-
-
