@@ -1,9 +1,15 @@
 import BackgroundColors from "@/util/BackgroundColor";
+import { withTheme } from "styled-components";
 import PokemonTypeButton from "./PokemonTypeButton";
 
 export default {
   title: "PokemonTypeButton",
   component: PokemonTypeButton,
+  argTypes: {
+    onclick: {
+      action: "action",
+    },
+  },
 };
 
 const Template = (args) => <PokemonTypeButton {...args} />;
@@ -15,4 +21,6 @@ NormalTypeButton.args = {
   type: "normal",
   width: 20,
   height: 20,
+  color: "#fff",
+  fontSize: "16px",
 };

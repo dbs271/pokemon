@@ -8,7 +8,7 @@ const page = () => {
     type: "normal",
   };
   const bColor = BackgroundColors[types.type];
-  const image = `/images/pokemon-types/${types.type}.svg`;
+
   return (
     <div>
       <PokemonTypeButton
