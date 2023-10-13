@@ -3,6 +3,11 @@ import PokemonAvarta from "./PokemonAvarta";
 export default {
   title: "PokemonAvarta",
   component: PokemonAvarta,
+  argTypes: {
+    onClick: {
+      action: "action",
+    },
+  },
 };
 
 const Template = (args) => <PokemonAvarta {...args} />;

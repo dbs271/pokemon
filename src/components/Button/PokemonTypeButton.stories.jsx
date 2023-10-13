@@ -6,7 +6,7 @@ export default {
   title: "PokemonTypeButton",
   component: PokemonTypeButton,
   argTypes: {
-    onclick: {
+    onClick: {
       action: "action",
     },
   },
