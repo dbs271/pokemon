@@ -1,5 +1,6 @@
 "use client";
 import { axiosInstance } from "@/api/axiosInstance";
+import PokeCard from "@/components/PokeCard/PokeCard";
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -13,8 +14,7 @@ const Home = () => {
 
   const fetchPokeData = async () => {
     try {
-      const res = await axiosInstance.get("pokemon?limit=100&offset=0");
-      console.log(res.data.results);
+      const res = await axiosInstance.get("pokemon?limit=10&offset=0");
       setPokemons(res.data.results);
     } catch (err) {
       console.error(err);
@@ -27,7 +27,7 @@ const Home = () => {
         <S.Pokemon>
           {pokemons.length > 0 ? (
             pokemons.map(({ url, name }, index) => (
-              <div key={index}>{name}</div>
+              <PokeCard key={index} name={name} url={url} />
             ))
           ) : (
             <S.H2>포켓몬이 없습니다.</S.H2>
