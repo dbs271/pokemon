@@ -1,6 +1,7 @@
 "use client";
 import { axiosInstance } from "@/api/axiosInstance";
 import React, { useEffect, useState } from "react";
+import PokemonAvarta from "../Avarta/PokemonAvarta";
 
 const PokeCard = ({ url, name }) => {
   const [pokemon, setPokemon] = useState();
@@ -28,8 +29,12 @@ const PokeCard = ({ url, name }) => {
     return PokeData;
   };
 
-  console.log(pokemon);
-  return <div>PokeCard</div>;
+  console.log(pokemon?.id);
+  return (
+    <div>
+      <PokemonAvarta id={pokemon?.id} width={100} height={100} alt={name} />
+    </div>
+  );
 };
 
 export default PokeCard;
