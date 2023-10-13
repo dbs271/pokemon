@@ -15,8 +15,8 @@ const page = () => {
         label="normal"
         backgroundColor={bColor}
         type={types.type}
-        width={20}
-        height={20}
+        width={30}
+        height={30}
       />
     </div>
   );

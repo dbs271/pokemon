@@ -19,8 +19,6 @@ NormalTypeButton.args = {
   label: "normal",
   backgroundColor: BackgroundColors.normal,
   type: "normal",
-  width: 20,
-  height: 20,
-  color: "#fff",
-  fontSize: "16px",
+  width: 30,
+  height: 30,
 };
