@@ -1,4 +1,4 @@
-const BackgroundColors = {
+const PokeTypeColors = {
   normal: "#949495",
   fighting: "#e09c41",
   flying: "#a3c3e7",
@@ -19,4 +19,4 @@ const BackgroundColors = {
   fairy: "#dab4d4",
 };
 
-export default BackgroundColors;
+export default PokeTypeColors;
