@@ -1,4 +1,4 @@
-import BackgroundColors from "@/util/BackgroundColor";
+import BackgroundColors from "@/util/PokeTypeColors";
 import { withTheme } from "styled-components";
 import PokemonTypeButton from "./PokemonTypeButton";
 
