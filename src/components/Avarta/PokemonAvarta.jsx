@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const PokemonAvarta = ({ id, width, height, name, onClick }) => {
+const PokemonAvarta = ({ id, width, height, alt, onClick }) => {
   const imageSrc = id
     ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
     : "";
@@ -12,7 +12,7 @@ const PokemonAvarta = ({ id, width, height, name, onClick }) => {
           src={imageSrc}
           width={width}
           height={height}
-          alt={name}
+          alt={alt}
           onClick={onClick}
         />
       )}

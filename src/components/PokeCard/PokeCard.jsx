@@ -29,10 +29,15 @@ const PokeCard = ({ url, name }) => {
     return PokeData;
   };
 
-  console.log(pokemon?.id);
+  console.log(pokemon?.name);
   return (
     <div>
-      <PokemonAvarta id={pokemon?.id} width={100} height={100} alt={name} />
+      <PokemonAvarta
+        id={pokemon?.id}
+        width={100}
+        height={100}
+        alt={pokemon?.name}
+      />
     </div>
   );
 };
