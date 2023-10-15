@@ -2,18 +2,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import axiosInstance from "@/api/@core/axiosInstance";
 import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { axiosInstance } from "@/api/@core/axiosInstance";
 
 const Home = () => {
   // React Query를 사용하여 데이터 및 페이지 처리 설정
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery(
-      "pokemonList", // 쿼리 키
+      ["pokemonList"], // 쿼리 키
       ({ pageParam = 0 }) => {
         return axiosInstance
-          .get(`pokemon?limit=10&offset=${pageParam}`)
+          .get(`pokemon?limit=100&offset=${pageParam}`)
           .then((res) => res.data.results);
       },
       {
@@ -23,7 +23,7 @@ const Home = () => {
         },
       }
     );
-
+  console.log({ data });
   // 스크롤 이벤트 감지하여 다음 페이지 데이터를 가져오는 함수
   const handleScroll = () => {
     if (
@@ -48,15 +48,21 @@ const Home = () => {
     <S.Article>
       <S.Header></S.Header>
       <S.Section>
-        <S.Pokemon>
-          {data.pages.map((page, pageIndex) =>
-            page.map((pokemon, index) => (
-              <PokeCard key={index} name={pokemon.name} url={pokemon.url} />
-            ))
-          )}
-          {isFetchingNextPage && <div>Loading...</div>}
-          {!hasNextPage && <div>All Pokemons Loaded</div>}
-        </S.Pokemon>
+        {data ? (
+          // 데이터가 존재할 때 실행할 코드
+          <S.Pokemon>
+            {data.pages.map((page, pageIndex) =>
+              page.map((pokemon, index) => (
+                <PokeCard key={index} name={pokemon.name} url={pokemon.url} />
+              ))
+            )}
+            {isFetchingNextPage && <div>Loading...</div>}
+            {!hasNextPage && <div>All Pokemons Loaded</div>}
+          </S.Pokemon>
+        ) : (
+          // 데이터가 아직 로딩 중일 때 실행할 코드
+          <div>Loading...</div>
+        )}
       </S.Section>
     </S.Article>
   );
