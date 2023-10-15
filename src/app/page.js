@@ -1,37 +1,61 @@
 "use client";
-import { axiosInstance } from "@/api/axiosInstance";
-import PokeCard from "@/components/PokeCard/PokeCard";
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import axiosInstance from "@/api/@core/axiosInstance";
+import PokeCard from "@/components/PokeCard/PokeCard";
+import { useInfiniteQuery } from "@tanstack/react-query";
+
 const Home = () => {
-  const [pokemons, setPokemons] = useState([]);
+  // React Query를 사용하여 데이터 및 페이지 처리 설정
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      "pokemonList", // 쿼리 키
+      ({ pageParam = 0 }) => {
+        return axiosInstance
+          .get(`pokemon?limit=10&offset=${pageParam}`)
+          .then((res) => res.data.results);
+      },
+      {
+        getNextPageParam: (lastPage, pages) => {
+          // 다음 페이지의 데이터를 가져오기 위한 페이지 번호 설정
+          return lastPage.length * pages.length;
+        },
+      }
+    );
 
-  useEffect(() => {
-    fetchPokeData();
-  }, []);
-
-  const fetchPokeData = async () => {
-    try {
-      const res = await axiosInstance.get("pokemon?limit=10&offset=0");
-      setPokemons(res.data.results);
-    } catch (err) {
-      console.error(err);
+  // 스크롤 이벤트 감지하여 다음 페이지 데이터를 가져오는 함수
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      fetchNextPage();
     }
   };
+
+  useEffect(() => {
+    // 스크롤 이벤트 리스너 등록
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <S.Article>
       <S.Header></S.Header>
       <S.Section>
         <S.Pokemon>
-          {pokemons.length > 0 ? (
-            pokemons.map(({ url, name }, index) => (
-              <PokeCard key={index} name={name} url={url} />
+          {data.pages.map((page, pageIndex) =>
+            page.map((pokemon, index) => (
+              <PokeCard key={index} name={pokemon.name} url={pokemon.url} />
             ))
-          ) : (
-            <S.H2>포켓몬이 없습니다.</S.H2>
           )}
+          {isFetchingNextPage && <div>Loading...</div>}
+          {!hasNextPage && <div>All Pokemons Loaded</div>}
         </S.Pokemon>
       </S.Section>
     </S.Article>

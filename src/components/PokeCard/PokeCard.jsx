@@ -1,5 +1,5 @@
 "use client";
-import { axiosInstance } from "@/api/axiosInstance";
+import { axiosInstance } from "@/api/@core/axiosInstance";
 import PokeTypeColors from "@/util/PokeTypeColors";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
