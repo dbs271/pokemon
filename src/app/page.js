@@ -35,7 +35,10 @@ const Home = () => {
       }
     );
   useEffect(() => {
-    if (inView && hasNextPage) return fetchNextPage;
+    if (inView && hasNextPage) {
+      console.log(inView, "@@");
+      fetchNextPage();
+    }
   }, [inView]);
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -51,9 +54,6 @@ const Home = () => {
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, [fetchNextPage]);
-  {
-    data && console.log(data);
-  }
 
   return (
     <S.Article>

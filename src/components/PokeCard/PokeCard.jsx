@@ -32,8 +32,6 @@ const PokeCard = ({ url, name }) => {
     return PokeData;
   };
 
-  console.log(pokemon?.name);
-
   return (
     <>
       {pokemon && (
