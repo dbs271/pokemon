@@ -5,16 +5,27 @@ import styled from "styled-components";
 import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/api/@core/axiosInstance";
+import UseObserver from "@/hooks/use-observer";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   // React Query를 사용하여 데이터 및 페이지 처리 설정
+  const [ref, inView] = useInView();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery(
       ["pokemonList"], // 쿼리 키
-      ({ pageParam = 0 }) => {
-        return axiosInstance
-          .get(`pokemon?limit=100&offset=${pageParam}`)
-          .then((res) => res.data.results);
+      async ({ pageParam = 0 }) => {
+        const res = await axiosInstance.get(
+          // `pokemon?limit=36&offset=${pageParam}`
+          "pokemon?",
+          {
+            params: {
+              limit: 36,
+              offset: pageParam,
+            },
+          }
+        );
+        return res.data.results;
       },
       {
         getNextPageParam: (lastPage, pages) => {
@@ -23,32 +34,32 @@ const Home = () => {
         },
       }
     );
-  console.log({ data });
-  // 스크롤 이벤트 감지하여 다음 페이지 데이터를 가져오는 함수
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      fetchNextPage();
-    }
-  };
-
   useEffect(() => {
-    // 스크롤 이벤트 리스너 등록
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      // 컴포넌트 언마운트 시 이벤트 리스너 제거
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    if (inView && hasNextPage) return fetchNextPage;
+  }, [inView]);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (
+  //       window.innerHeight + window.scrollY >=
+  //       document.body.offsetHeight - 100
+  //     ) {
+  //       fetchNextPage();
+  //     }
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [fetchNextPage]);
+  {
+    data && console.log(data);
+  }
 
   return (
     <S.Article>
       <S.Header></S.Header>
       <S.Section>
-        {data ? (
+        {data && (
           // 데이터가 존재할 때 실행할 코드
           <S.Pokemon>
             {data.pages.map((page, pageIndex) =>
@@ -58,11 +69,13 @@ const Home = () => {
             )}
             {isFetchingNextPage && <div>Loading...</div>}
             {!hasNextPage && <div>All Pokemons Loaded</div>}
+            <div ref={ref} />
           </S.Pokemon>
-        ) : (
-          // 데이터가 아직 로딩 중일 때 실행할 코드
-          <div>Loading...</div>
         )}
+        {/* <UseObserver
+          onClick={() => fetchNextPage()}
+          isFetchingNextPage={isFetchingNextPage}
+        /> */}
       </S.Section>
     </S.Article>
   );
