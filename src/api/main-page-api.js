@@ -3,7 +3,8 @@ const { axiosInstance } = require("./@core/axiosInstance");
 const GetList = (API_KEY, pageParam) => {
   return axiosInstance.get(API_KEY, {
     params: {
-      page: pageParam,
+      limit: 36,
+      offset: pageParam,
     },
   });
 };

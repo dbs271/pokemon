@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/api/@core/axiosInstance";
-import UseObserver from "@/hooks/use-observer";
 import { useInView } from "react-intersection-observer";
+import { useGetList } from "@/hooks/querys/use-main-query";
 
 const Home = () => {
   // React Query를 사용하여 데이터 및 페이지 처리 설정
@@ -15,16 +15,12 @@ const Home = () => {
     useInfiniteQuery(
       ["pokemonList"], // 쿼리 키
       async ({ pageParam = 0 }) => {
-        const res = await axiosInstance.get(
-          // `pokemon?limit=36&offset=${pageParam}`
-          "pokemon?",
-          {
-            params: {
-              limit: 36,
-              offset: pageParam,
-            },
-          }
-        );
+        const res = await axiosInstance.get("pokemon?", {
+          params: {
+            limit: 36,
+            offset: pageParam,
+          },
+        });
         return res.data.results;
       },
       {
@@ -36,24 +32,9 @@ const Home = () => {
     );
   useEffect(() => {
     if (inView && hasNextPage) {
-      console.log(inView, "@@");
       fetchNextPage();
     }
   }, [inView]);
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (
-  //       window.innerHeight + window.scrollY >=
-  //       document.body.offsetHeight - 100
-  //     ) {
-  //       fetchNextPage();
-  //     }
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [fetchNextPage]);
 
   return (
     <S.Article>
@@ -72,10 +53,6 @@ const Home = () => {
             <div ref={ref} />
           </S.Pokemon>
         )}
-        {/* <UseObserver
-          onClick={() => fetchNextPage()}
-          isFetchingNextPage={isFetchingNextPage}
-        /> */}
       </S.Section>
     </S.Article>
   );

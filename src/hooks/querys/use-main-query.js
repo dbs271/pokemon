@@ -9,11 +9,9 @@ export const useGetList = (API_KEY) => {
       ({ pageParam = 1 }) => POKE_API.GetList(API_KEY, pageParam),
       {
         ...queryConfig,
-        getNextPageParam: (lastPage) => {
-          if (lastPage && lastPage.data.page) {
-            return lastPage.data.page + 1;
-          }
-          return null;
+        getNextPageParam: (lastPage, pages) => {
+          // 다음 페이지의 데이터를 가져오기 위한 페이지 번호 설정
+          return lastPage.length * pages.length;
         },
       }
     );
