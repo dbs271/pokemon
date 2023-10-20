@@ -6,35 +6,10 @@ import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/api/@core/axiosInstance";
 import { useInView } from "react-intersection-observer";
-import { useGetList } from "@/hooks/querys/use-main-query";
+import { useInfinitePokeQuery } from "@/hooks/querys/useInfinitePokeQuery";
 
 const Home = () => {
-  // React Query를 사용하여 데이터 및 페이지 처리 설정
-  const [ref, inView] = useInView();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ["pokemonList"], // 쿼리 키
-      async ({ pageParam = 0 }) => {
-        const res = await axiosInstance.get("pokemon?", {
-          params: {
-            limit: 36,
-            offset: pageParam,
-          },
-        });
-        return res.data.results;
-      },
-      {
-        getNextPageParam: (lastPage, pages) => {
-          // 다음 페이지의 데이터를 가져오기 위한 페이지 번호 설정
-          return lastPage.length * pages.length;
-        },
-      }
-    );
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView]);
+  const { data, isFetchingNextPage, hasNextPage, ref } = useInfinitePokeQuery();
 
   return (
     <S.Article>
