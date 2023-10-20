@@ -3,17 +3,22 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import PokeCard from "@/components/PokeCard/PokeCard";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { axiosInstance } from "@/api/@core/axiosInstance";
-import { useInView } from "react-intersection-observer";
 import { useInfinitePokeQuery } from "@/hooks/querys/useInfinitePokeQuery";
+import { BiSearchAlt2 } from "react-icons/bi";
 
 const Home = () => {
   const { data, isFetchingNextPage, hasNextPage, ref } = useInfinitePokeQuery();
 
   return (
     <S.Article>
-      <S.Header></S.Header>
+      <S.Header>
+        <S.SearchBox>
+          <S.SearchInput placeholder="검색어를 입력해주세요." />
+          <S.SearchButton>
+            <BiSearchAlt2 />
+          </S.SearchButton>
+        </S.SearchBox>
+      </S.Header>
       <S.Section>
         {data && (
           // 데이터가 존재할 때 실행할 코드
@@ -42,11 +47,38 @@ S.Article = styled.article`
 
 S.Header = styled.header`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
   padding: 1rem;
   z-index: 50;
+`;
+S.SearchBox = styled.div`
+  position: relative;
+`;
+S.SearchInput = styled.input`
+  width: 320px;
+  height: 30px;
+
+  border: 1px solid #000;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-size: 14px;
+  :focus {
+    border-color: #007bff;
+  }
+`;
+S.SearchButton = styled.button`
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background-color: transparent;
 `;
 S.Section = styled.section`
   padding-top: 6px;
