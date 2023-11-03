@@ -10,9 +10,10 @@ const Search = () => {
   const searchKeyword = (e) => {
     e.preventDefault();
     const keyword = inputRef.current.value;
-    router.push(`pokemon?/${keyword}`);
+    router.push(`pokemon/${keyword}`);
     inputRef.current.value = "";
   };
+
   return (
     <form onSubmit={searchKeyword}>
       <S.SearchBox>
