@@ -4,15 +4,15 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 
-const Search = () => {
-  const inputRef = useRef("");
-  const router = useRouter();
-  const searchKeyword = (e) => {
-    e.preventDefault();
-    const keyword = inputRef.current.value;
-    router.push(`pokemon/${keyword}`);
-    inputRef.current.value = "";
-  };
+const Search = ({ inputRef, searchKeyword }) => {
+  // const inputRef = useRef("");
+  // const router = useRouter();
+  // const searchKeyword = (e) => {
+  //   e.preventDefault();
+  //   const keyword = inputRef.current.value;
+  //   router.push(`pokemon/${keyword}`);
+  //   inputRef.current.value = "";
+  // };
 
   return (
     <form onSubmit={searchKeyword}>

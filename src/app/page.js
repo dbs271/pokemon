@@ -1,29 +1,51 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfinitePokeQuery } from "@/hooks/querys/useInfinitePokeQuery";
 
 import Search from "@/components/Search/Search";
+import { useRouter } from "next/navigation";
 
+// Home.js
 const Home = () => {
-  const { data, isFetchingNextPage, hasNextPage, ref } = useInfinitePokeQuery();
+  const { data, isFetchingNextPage, hasNextPage, ref, setSearch, search } =
+    useInfinitePokeQuery();
+
+  const inputRef = useRef("");
+
+  const searchKeyword = (e) => {
+    e.preventDefault();
+    const keyword = inputRef.current.value;
+    setSearch(keyword);
+    inputRef.current.value = "";
+  };
 
   return (
     <S.Article>
       <S.Header>
-        <Search />
+        <Search inputRef={inputRef} searchKeyword={searchKeyword} />
       </S.Header>
       <S.Section>
         {data && (
           // 데이터가 존재할 때 실행할 코드
           <S.Pokemon>
-            {data.pages.map((page, pageIndex) =>
-              page.map((pokemon, index) => (
-                <PokeCard key={index} name={pokemon.name} url={pokemon.url} />
-              ))
-            )}
+            {search
+              ? // 검색 결과 렌더링
+                data.map((pokemon, index) => (
+                  <PokeCard key={index} name={pokemon.name} url={pokemon.url} />
+                ))
+              : // 무한 스크롤 데이터 렌더링
+                data.pages.map((page, pageIndex) =>
+                  page.map((pokemon, index) => (
+                    <PokeCard
+                      key={index}
+                      name={pokemon.name}
+                      url={pokemon.url}
+                    />
+                  ))
+                )}
             {isFetchingNextPage && <div>Loading...</div>}
             {!hasNextPage && <div>All Pokemons Loaded</div>}
             <div ref={ref} />
