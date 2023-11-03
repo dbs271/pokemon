@@ -39,6 +39,7 @@ export const useInfinitePokeQuery = () => {
       return [
         {
           name: res.data.name,
+          id: res.data.id,
           url: `pokemon/${res.data.id}`, // url 추가
         },
       ];

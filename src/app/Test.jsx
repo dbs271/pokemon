@@ -1,12 +1,11 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 import PokeCard from "@/components/PokeCard/PokeCard";
 import { useInfinitePokeQuery } from "@/hooks/querys/useInfinitePokeQuery";
 
 import Search from "@/components/Search/Search";
-import Link from "next/link";
 
 const Home = () => {
   const { data, isFetchingNextPage, hasNextPage, ref, setSearch, search } =
@@ -21,16 +20,9 @@ const Home = () => {
     inputRef.current.value = "";
   };
 
-  const resetSearch = () => {
-    setSearch("");
-  };
-
   return (
     <S.Article>
       <S.Header>
-        <Link href={"/"} onClick={resetSearch}>
-          Pokemon
-        </Link>
         <Search inputRef={inputRef} searchKeyword={searchKeyword} />
       </S.Header>
       <S.Section>
