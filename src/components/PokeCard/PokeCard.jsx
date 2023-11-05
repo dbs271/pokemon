@@ -35,7 +35,7 @@ const PokeCard = ({ url, name }) => {
   return (
     <>
       {pokemon && (
-        <S.Link href={`/pokemon/${name}`}>
+        <S.Link href={`/detail/${name}`}>
           <S.NumberBox pokeType={pokemon?.type[0]}>
             #{pokemon?.id.toString().padStart(3, "00")}
           </S.NumberBox>
