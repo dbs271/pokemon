@@ -1,9 +1,13 @@
 "use client";
 
 import { axiosInstance } from "@/api/@core/axiosInstance";
+import { GreaterThan, LessThan, Loading } from "@/assets/PokeAssets";
+import PokeTypeColors from "@/util/PokeTypeColors";
 import axios from "axios";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const Detail = () => {
   const [pokemon, setPokemon] = useState();
@@ -36,6 +40,7 @@ const Detail = () => {
         const formatedPokemonData = {
           id,
           name,
+          types: types.map((type) => type.type.name),
           weight: weight / 10,
           height: height / 10,
           previous: nextAndPreviousPokemon.previous,
@@ -49,6 +54,7 @@ const Detail = () => {
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -91,9 +97,85 @@ const Detail = () => {
     };
   };
 
-  if (isLoading) return <div>...Loading</div>;
+  if (isLoading)
+    return (
+      <S.Loading>
+        <Loading />
+      </S.Loading>
+    );
+  if (!isLoading && !pokemon) return <div>...NOT FOUND</div>;
 
-  return <div>page</div>;
+  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon?.id}.png`;
+
+  return (
+    <S.Article>
+      <S.Container pokeType={pokemon?.types?.[0]}>
+        {pokemon.previous && (
+          <S.LeftLink href={`/pokemon/${pokemon.previous}`}>
+            <LessThan />
+          </S.LeftLink>
+        )}
+        asdasd
+        {pokemon.next && (
+          <S.RightLink href={`/pokemon/${pokemon.next}`}>
+            <GreaterThan />
+          </S.RightLink>
+        )}
+      </S.Container>
+    </S.Article>
+  );
 };
 
 export default Detail;
+
+export const S = {};
+S.Loading = styled.div`
+  position: absolute;
+  height: auto;
+  width: auto;
+  top: calc(33%);
+  transform: translateX(50%);
+  left: 50%;
+  z-index: 50;
+`;
+
+S.Article = styled.article`
+  display: flex;
+  align-items: center;
+  gap: 1;
+  flex-direction: column;
+  width: 100%;
+`;
+
+S.Container = styled.div`
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
+  align-items: center;
+  background-color: ${(props) => PokeTypeColors[props.pokeType]};
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+`;
+
+S.LeftLink = styled(Link)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  transform: translateY(-50%); /* 수정: 중앙 정렬을 위한 translateY 설정 */
+  width: 16px;
+  height: 16px;
+`;
+
+S.RightLink = styled(Link)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  transform: translateY(-50%); /* 수정: 중앙 정렬을 위한 translateY 설정 */
+  width: 16px;
+  height: 16px;
+`;
