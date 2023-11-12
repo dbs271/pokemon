@@ -9,6 +9,7 @@ import {
   Loading,
   Vector,
 } from "@/assets/PokeAssets";
+import Type from "@/components/Type/Type";
 import PokeTypeColors from "@/util/PokeTypeColors";
 import axios from "axios";
 import Image from "next/image";
@@ -144,7 +145,11 @@ const Detail = () => {
           </S.ImageBox>
         </S.Section>
         <S.BottomSection>
-          <S.PokemonType>{/* pokemonType */}</S.PokemonType>
+          <S.PokemonType>
+            {pokemon.types.map((type) => (
+              <Type key={type} type={type} />
+            ))}
+          </S.PokemonType>
           <S.PokemonInfo pokeType={pokemon?.types?.[0]}>정보</S.PokemonInfo>
           <S.InfoContainer>
             <S.InfoBox>
