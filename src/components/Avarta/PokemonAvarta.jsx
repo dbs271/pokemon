@@ -14,7 +14,7 @@ const PokemonAvarta = ({ id, width, height, alt, onClick }) => {
   }, [isLoading]);
 
   const imageSrc = id
-    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+    ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
     : "";
   return (
     <>
