@@ -9,6 +9,7 @@ import {
   Loading,
   Vector,
 } from "@/assets/PokeAssets";
+import BaseStat from "@/components/BaseStat/BaseStat";
 import Type from "@/components/Type/Type";
 import PokeTypeColors from "@/util/PokeTypeColors";
 import axios from "axios";
@@ -176,7 +177,20 @@ const Detail = () => {
           <S.PokemonInfo pokeType={pokemon?.types?.[0]}>
             기본 능력치
           </S.PokemonInfo>
-          <S.StatContainer>Stat</S.StatContainer>
+          <S.StatContainer>
+            <table>
+              <tbody>
+                {pokemon.stats.map((stat) => (
+                  <BaseStat
+                    key={stat.name}
+                    valueStat={stat.baseStat}
+                    nameStat={stat.name}
+                    type={pokemon.types[0]}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </S.StatContainer>
           {pokemon.DamageRelations && (
             <S.PokemonDamage>
               <S.PokemonInfo pokeType={pokemon?.types?.[0]}>
