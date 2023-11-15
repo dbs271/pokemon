@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const BaseStat = ({ valueStat, nameStat, type }) => {
   const ref = useRef(null);
-  console.log(ref);
+
   useEffect(() => {
     const setValueStat = ref.current;
     const calc = valueStat * (100 / 255);

@@ -31,13 +31,15 @@ const Detail = () => {
   }, []);
 
   const fetchPokemonData = async () => {
-    const url = axiosInstance.get(`pokemon/${pokemonId}`);
     try {
-      const { data: pokemonData } = await url;
+      const { data: pokemonData } = await axiosInstance.get(
+        `/pokemon/${pokemonId}`
+      );
 
       if (pokemonData) {
-        const { name, id, types, weight, height, stats, abilities } =
+        const { name, id, types, weight, height, stats, abilities, sprites } =
           pokemonData;
+
         const nextAndPreviousPokemon = await getNextAndPreviousPokemon(id);
 
         const DamageRelations = await Promise.all(
@@ -91,19 +93,21 @@ const Detail = () => {
   };
 
   const getNextAndPreviousPokemon = async (id) => {
-    const urlPokemon = axiosInstance.get(`/pokemon?limit=1&offset=${id - 1}`);
+    const urlPokemon = axiosInstance.get(`pokemon/?limit=1&offset=${id - 1}`);
 
     const { data: pokemonData } = await urlPokemon;
 
     const nextResponse =
-      pokemonData.next && (await axios.get(pokemonData.next));
+      pokemonData.next && (await axios.get(pokemonData?.next));
+    console.log("next", nextResponse);
 
     const previousResponse =
-      pokemonData.previous && (await axios.get(pokemonData.previous));
+      pokemonData.previous && (await axios.get(pokemonData?.previous));
+    console.log("prev", previousResponse);
 
     return {
-      next: nextResponse?.data?.results?.[0].name,
-      previous: previousResponse?.data?.results?.[0].name,
+      next: nextResponse?.data?.results?.[0]?.name,
+      previous: previousResponse?.data?.results?.[0]?.name,
     };
   };
 
@@ -121,13 +125,13 @@ const Detail = () => {
     <S.Article>
       <S.Container pokeType={pokemon?.types?.[0]}>
         {pokemon.previous && (
-          <S.LeftLink href={`/pokemon/${pokemon.previous}`}>
+          <S.LeftLink href={`/detail/${pokemon.previous}`}>
             <LessThan />
           </S.LeftLink>
         )}
 
         {pokemon.next && (
-          <S.RightLink href={`/pokemon/${pokemon.next}`}>
+          <S.RightLink href={`/detail/${pokemon.next}`}>
             <GreaterThan />
           </S.RightLink>
         )}
